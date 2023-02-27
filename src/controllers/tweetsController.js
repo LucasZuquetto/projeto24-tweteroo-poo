@@ -1,5 +1,15 @@
-const tweets = [];
-const usuarios = [];
+import { tweets, usuarios } from "../index.js";
+
+class Tweet {
+   constructor(username, tweet) {
+      this.username = username;
+      this.tweet = tweet;
+      this.avatar = usuarios.find((user) => user.username === username)?.avatar;
+   }
+   addTweetToDatabase() {
+      tweets.push(this);
+   }
+}
 
 export function postTweets(req, res) {
    const { tweet, username } = req.body;
@@ -8,17 +18,18 @@ export function postTweets(req, res) {
       return res.status(400).send("Todos os campos são obrigatórios!");
    }
 
-   const { avatar } = usuarios.find((user) => user.username === username);
+   const tt = new Tweet(username, tweet);
 
-   tweets.push({ username, tweet, avatar });
+   tt.addTweetToDatabase();
 
-   res.status(201).send("OK, seu tweet foi criado");
+   res.status(201).send(tweets);
 }
 
 export function getTweetsByUsername(req, res) {
    const { username } = req.params;
 
    const tweetsDoUsuario = tweets.filter((t) => t.username === username);
+   console.log(usuarios);
 
    res.status(200).send(tweetsDoUsuario);
 }
@@ -42,5 +53,5 @@ export function getTweets(req, res) {
 }
 
 function reverseTweets() {
-    return [...tweets].reverse();
- }
+   return [...tweets].reverse();
+}

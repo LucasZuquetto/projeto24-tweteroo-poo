@@ -1,4 +1,14 @@
-const usuarios = [];
+import { usuarios } from "../index.js";
+
+class Usuario {
+   constructor(username, avatar) {
+      this.username = username;
+      this.avatar = avatar;
+   }
+   addToDatabase() {
+      usuarios.push(this);
+   }
+}
 
 export default function authController(req, res) {
    const { username, avatar } = req.body;
@@ -8,7 +18,9 @@ export default function authController(req, res) {
       return;
    }
 
-   usuarios.push({ username, avatar });
+   const user = new Usuario(username, avatar);
 
-   res.status(200).send("OK deu tudo certo");
+   user.addToDatabase();
+
+   res.status(200).send(usuarios);
 }

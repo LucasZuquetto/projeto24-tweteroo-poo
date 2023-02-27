@@ -5,6 +5,9 @@ import router from "./routes/router.js";
 
 const app = express();
 
+export const tweets = [];
+export const usuarios = [];
+
 app.use(cors());
 app.use(json());
 
